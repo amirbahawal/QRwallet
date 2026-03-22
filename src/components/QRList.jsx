@@ -3,38 +3,44 @@ import { QRCodeSVG } from 'qrcode.react';
 const QRList = ({ qrs, onDelete, onView }) => {
     if (qrs.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-3xl mb-4">📭</div>
-                <h3 className="text-lg font-semibold text-gray-800">No QR codes yet</h3>
-                <p className="text-gray-500 max-w-xs mx-auto mt-2">
-                    Scan your first QR code to store it in your digital wallet.
+            <div className="flex flex-col items-center justify-center py-24 px-6 text-center bg-gray-50/50 rounded-[2.5rem] border-2 border-dashed border-gray-200/60 animate-in fade-in zoom-in duration-700">
+                <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-sm border border-gray-100">
+                    <span className="grayscale opacity-50">📭</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 tracking-tight">Your wallet is empty</h3>
+                <p className="text-gray-400 max-w-[240px] mx-auto mt-2 text-sm font-medium leading-relaxed">
+                    Scan or upload a QR code to start building your collection.
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {qrs.map((qr) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {qrs.map((qr, index) => (
                 <div 
                     key={qr.id}
                     onClick={() => onView(qr)}
-                    className="group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-md border border-gray-100 transition-all cursor-pointer active:scale-95"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="group relative bg-white rounded-3xl p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-gray-100/50 transition-all cursor-pointer active:scale-[0.98] animate-in fade-in slide-in-from-bottom-3 duration-500 fill-mode-both"
                 >
-                    <div className="flex items-center gap-4">
-                        <div className="p-2 bg-gray-50 rounded-xl">
-                            <QRCodeSVG value={qr.qrData} size={64} level="H" />
+                    <div className="flex items-center gap-5">
+                        <div className="p-3 bg-gray-50 rounded-2xl group-hover:bg-indigo-50 transition-colors duration-300">
+                            <QRCodeSVG value={qr.qrData} size={56} level="H" />
                         </div>
                         <div className="flex-1 min-w-0">
-                            <h3 className="font-bold text-gray-800 truncate">{qr.name}</h3>
-                            <p className="text-sm text-gray-500 truncate">{qr.platform || 'General'}</p>
+                            <h3 className="font-black text-gray-900 truncate tracking-tight">{qr.name}</h3>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400"></div>
+                                <p className="text-xs font-bold text-gray-400 truncate uppercase tracking-wider">{qr.platform || 'General'}</p>
+                            </div>
                         </div>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onDelete(qr.id);
                             }}
-                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-2.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100"
                             title="Delete"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
